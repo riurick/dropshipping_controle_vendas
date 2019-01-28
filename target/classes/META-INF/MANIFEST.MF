@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: dropshipping
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: rodri
+Implementation-Vendor-Id: com.dropshipping
+Build-Jdk: 1.8.0_181
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/dropshipping
+Created-By: Maven Integration for Eclipse
+
