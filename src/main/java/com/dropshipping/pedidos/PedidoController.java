@@ -1,0 +1,102 @@
+package com.dropshipping.pedidos;
+
+import java.net.URI;
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import com.dropshipping.exception.RegraNegocioException;
+import com.dropshipping.exception.SampleEntityNotFoundException;
+import com.dropshipping.response.MessageType;
+import com.dropshipping.response.ServiceMessage;
+import com.dropshipping.response.ServiceResponse;
+import com.dropshipping.service.MessagesService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@RestController
+@RequestMapping("/api/v1/pedidos")
+@Api(value = "Pedidos")
+public class PedidoController {
+	public static final String PEDIDO_CRIADO = "pedido.criado";
+	public static final String PEDIDO_ATUALIZADO = "pedido.atualizado";
+	public static final String PEDIDO_DELETADO = "pedido.deletado";
+	@Autowired
+	 PedidoService pedidoService;
+	
+	@Autowired
+	private MessagesService messages;
+	
+	@PostMapping
+	@ApiOperation(value = "Cria um assunto")
+	public ResponseEntity<ServiceResponse<Pedido>> create(@RequestBody @Valid  Pedido pedido) throws RegraNegocioException {
+
+		pedido = pedidoService.create(pedido);
+
+		HttpHeaders headers = new HttpHeaders();
+
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(pedido.getId())
+				.toUri();
+		headers.setLocation(location);
+
+		ServiceMessage message = new ServiceMessage(messages.get(PEDIDO_CRIADO));
+
+		return new ResponseEntity<>(new ServiceResponse<>(pedido, message), headers, HttpStatus.CREATED);
+	}
+
+	@ApiOperation(value = "Detalha um Pedido pelo ID", notes = "Um ID válido deve ser informado", response = Pedido.class)
+	@GetMapping("/{id}")
+	public ResponseEntity<ServiceResponse<Pedido>> findById(@PathVariable Integer id) throws SampleEntityNotFoundException {
+		return ResponseEntity.ok(new ServiceResponse<>(pedidoService.findById(id)));
+	}
+
+	@GetMapping
+	@ApiOperation(value = "Lista", response = Pedido.class)
+	public ServiceResponse<List<Pedido>> listassuntosPaginado() {
+		return new ServiceResponse<>(pedidoService.getAll());
+	}
+
+	@PutMapping("/{id}")
+	@ApiOperation(value = "Altera os dados do Pedido informado", notes = "Um ID válido deve ser informado", response = Pedido.class)
+	public ResponseEntity<ServiceResponse<Pedido>> update(@PathVariable Integer id,
+			@Valid @RequestBody Pedido pedido) throws RegraNegocioException, SampleEntityNotFoundException {
+		if (!pedido.getId().equals(id)) {
+			return new ResponseEntity<>(
+					new ServiceResponse<>(null,
+							new ServiceMessage(MessageType.ERROR, "URL ID: '" + id
+									+ " pedido não corresponde " + pedido.getId() + "'.")),
+					HttpStatus.BAD_REQUEST);
+		}
+
+		ServiceMessage message = new ServiceMessage(messages.get(PEDIDO_ATUALIZADO));
+
+		return new ResponseEntity<>(new ServiceResponse<>(pedidoService.update(pedido), message),
+				HttpStatus.OK);
+
+	}
+
+	@DeleteMapping("/{id}")
+	@ApiOperation(value = "Apaga um pedido pelo id", notes = "Um id válido deve ser informado", response = Pedido.class)
+	public ResponseEntity<ServiceResponse<Void>> delete(@PathVariable Integer id) throws SampleEntityNotFoundException {
+		pedidoService.delete(id);
+		ServiceMessage message = new ServiceMessage(messages.get(PEDIDO_DELETADO));
+
+		return new ResponseEntity<>(new ServiceResponse<>(message), HttpStatus.OK);
+	}
+
+}
