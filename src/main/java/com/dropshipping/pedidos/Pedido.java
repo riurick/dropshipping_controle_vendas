@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -39,8 +40,13 @@ public class Pedido {
 	@Fetch(FetchMode.JOIN)
 	private Vendedor vendedor;
 	
-	private Boolean pagamento_efetuado;
-
+	private Boolean pagamentoEfetuado;
+	
+	@Size(max = 255)
+	private String avComentario;
+	
+	private Integer nota;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -73,14 +79,29 @@ public class Pedido {
 		this.vendedor = vendedor;
 	}
 
-	public Boolean getPagamento_efetuado() {
-		return pagamento_efetuado;
+	public Boolean getPagamentoEfetuado() {
+		return pagamentoEfetuado;
 	}
 
-	public void setPagamento_efetuado(Boolean pagamento_efetuado) {
-		this.pagamento_efetuado = pagamento_efetuado;
+	public void setPagamentoEfetuado(Boolean pagamentoEfetuado) {
+		this.pagamentoEfetuado = pagamentoEfetuado;
 	}
 
-	
+	public String getAvComentario() {
+		return avComentario;
+	}
+
+	public void setAvComentario(String avComentario) {
+		this.avComentario = avComentario;
+	}
+
+	public Integer getNota() {
+		return nota;
+	}
+
+	public void setNota(Integer nota) {
+		this.nota = nota;
+	}
+
 	
 }
