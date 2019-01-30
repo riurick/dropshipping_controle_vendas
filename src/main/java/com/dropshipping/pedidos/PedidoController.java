@@ -6,6 +6,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -97,6 +99,20 @@ public class PedidoController {
 		ServiceMessage message = new ServiceMessage(messages.get(PEDIDO_DELETADO));
 
 		return new ResponseEntity<>(new ServiceResponse<>(message), HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "Detalha um Pedido pelo ID do cliente", notes = "Um ID válido deve ser informado", response = Pedido.class)
+	@GetMapping("/cliente/{id}")
+	public ResponseEntity<ServiceResponse<Page<Pedido>>> buscaPorCliente(@PathVariable Integer id, Pageable pageable) throws SampleEntityNotFoundException, RegraNegocioException {
+		Page<Pedido> page = pedidoService.buscaPorCliente(id, pageable);
+		return ResponseEntity.ok(new ServiceResponse<>(page));
+	}
+	
+	@ApiOperation(value = "Detalha um Pedido pelo ID do vendedor", notes = "Um ID válido deve ser informado", response = Pedido.class)
+	@GetMapping("/vendedor/{id}")
+	public ResponseEntity<ServiceResponse<Page<Pedido>>> buscaPorVendedor(@PathVariable Integer id, Pageable pageable) throws SampleEntityNotFoundException, RegraNegocioException {
+		Page<Pedido> page = pedidoService.buscaPorVendedor(id, pageable);
+		return ResponseEntity.ok(new ServiceResponse<>(page));
 	}
 
 }

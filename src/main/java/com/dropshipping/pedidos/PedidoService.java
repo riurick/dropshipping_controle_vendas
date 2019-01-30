@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.dropshipping.clientes.ClienteRepository;
@@ -81,5 +83,19 @@ public class PedidoService {
 				throw new RegraNegocioException(messages.get(VENDEDOR_NAO_ECONTRADO));
 			}
 		}
+	}
+	
+	public Page<Pedido> buscaPorCliente(Integer id, Pageable pageable) throws RegraNegocioException{
+		if (!clienteRepository.findById(id).isPresent()) {
+			throw new RegraNegocioException(messages.get(CLIENTE_NAO_ECONTRADO));
+		}
+		return pedidoRepository.buscaPorCliente(id, pageable);
+	}
+	
+	public Page<Pedido> buscaPorVendedor(Integer id, Pageable pageable) throws RegraNegocioException{
+		if (!vendedorRepository.findById(id).isPresent()) {
+			throw new RegraNegocioException(messages.get(VENDEDOR_NAO_ECONTRADO));
+		}
+		return pedidoRepository.buscaPorVendedor(id, pageable);
 	}
 }

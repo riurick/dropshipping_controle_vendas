@@ -26,7 +26,7 @@ public class Pedido {
 	private Integer id;
 	
 	@NotNull
-	private Date dt_pedido;
+	private Date dtPedido;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="cliente_id")
@@ -49,12 +49,12 @@ public class Pedido {
 		this.id = id;
 	}
 
-	public Date getDt_pedido() {
-		return dt_pedido;
+	public Date getDtPedido() {
+		return dtPedido;
 	}
 
-	public void setDt_pedido(Date dt_pedido) {
-		this.dt_pedido = dt_pedido;
+	public void setDtPedido(Date dtPedido) {
+		this.dtPedido = dtPedido;
 	}
 
 	public Cliente getCliente() {
