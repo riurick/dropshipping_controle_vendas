@@ -47,6 +47,9 @@ public class Pedido {
 	
 	private Integer nota;
 	
+	@Size(max = 45)
+	private String statusEntrega;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -101,6 +104,14 @@ public class Pedido {
 
 	public void setNota(Integer nota) {
 		this.nota = nota;
+	}
+
+	public String getStatusEntrega() {
+		return statusEntrega;
+	}
+
+	public void setStatusEntrega(String statusEntrega) {
+		this.statusEntrega = statusEntrega;
 	}
 
 	
