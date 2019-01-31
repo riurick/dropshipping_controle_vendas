@@ -1,4 +1,4 @@
-package com.dropshipping.produtospedidos;
+package com.dropshipping.promocoespedidos;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,17 +17,11 @@ import com.dropshipping.produtos.Produto;
 
 
 @Entity
-public class ProdutoPedido {
+public class PromocaoPedido {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="pedido_id")
-	@Fetch(FetchMode.JOIN)
-	@NotNull
-	private Pedido pedido;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="produto_id")
@@ -35,11 +29,11 @@ public class ProdutoPedido {
 	@NotNull
 	private Produto produto;
 	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="produto_id")
+	@Fetch(FetchMode.JOIN)
 	@NotNull
-	private Integer quantidade;
-	
-	@NotNull
-	private Double valor;
+	private Pedido pedido;
 
 	public Integer getId() {
 		return id;
@@ -47,14 +41,6 @@ public class ProdutoPedido {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public Pedido getPedido() {
-		return pedido;
-	}
-
-	public void setPedido(Pedido pedido) {
-		this.pedido = pedido;
 	}
 
 	public Produto getProduto() {
@@ -65,20 +51,13 @@ public class ProdutoPedido {
 		this.produto = produto;
 	}
 
-	public Integer getQuantidade() {
-		return quantidade;
+	public Pedido getPedido() {
+		return pedido;
 	}
 
-	public void setQuantidade(Integer quantidade) {
-		this.quantidade = quantidade;
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
 	}
-
-	public Double getValor() {
-		return valor;
-	}
-
-	public void setValor(Double valor) {
-		this.valor = valor;
-	}
+	
 	
 }

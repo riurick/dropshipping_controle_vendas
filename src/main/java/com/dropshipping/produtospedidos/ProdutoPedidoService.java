@@ -7,12 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import com.dropshipping.enderecos.EnderecoRepository;
 import com.dropshipping.exception.RegraNegocioException;
 import com.dropshipping.exception.SampleEntityNotFoundException;
 import com.dropshipping.pedidos.Pedido;
 import com.dropshipping.pedidos.PedidoRepository;
 import com.dropshipping.produtos.ProdutoRepository;
+import com.dropshipping.promocoes.Promocao;
+import com.dropshipping.promocoespedidos.PromocaoPedidoRepository;
 import com.dropshipping.service.MessagesService;
 
 @Service
@@ -31,17 +32,21 @@ public class ProdutoPedidoService {
 	@Autowired
 	ProdutoRepository produtoRepository;
 	
-	@Autowired
-	EnderecoRepository enderecoRepository;
-	
+	@Autowired 
+	PromocaoPedidoRepository promocaoPedidoRepository;
 	
 	@Autowired
 	MessagesService messages;
 	
 	public ProdutoPedido create(ProdutoPedido produtoPedido) throws RegraNegocioException{
 		validaProdutoPedido(produtoPedido);
-		
+		calculaValor(produtoPedido);
 		return produtoPedidoRepository.save(produtoPedido);
+	}
+
+	private void calculaValor(ProdutoPedido produtoPedido) {
+		//Optional<ProdutoPedido> op = promocaoPedidoRepository.findByProdutoId(produtoPedido.getProduto().getId());
+		
 	}
 
 	public ProdutoPedido update(ProdutoPedido produtoPedido) throws RegraNegocioException, SampleEntityNotFoundException {
