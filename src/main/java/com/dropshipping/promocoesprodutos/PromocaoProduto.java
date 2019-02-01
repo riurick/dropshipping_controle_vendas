@@ -1,4 +1,4 @@
-package com.dropshipping.promocoespedidos;
+package com.dropshipping.promocoesprodutos;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,12 +12,12 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import com.dropshipping.pedidos.Pedido;
 import com.dropshipping.produtos.Produto;
+import com.dropshipping.promocoes.Promocao;
 
 
 @Entity
-public class PromocaoPedido {
+public class PromocaoProduto {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -30,10 +30,10 @@ public class PromocaoPedido {
 	private Produto produto;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="produto_id")
+	@JoinColumn(name="promocao_id")
 	@Fetch(FetchMode.JOIN)
 	@NotNull
-	private Pedido pedido;
+	private Promocao promocao;
 
 	public Integer getId() {
 		return id;
@@ -51,13 +51,14 @@ public class PromocaoPedido {
 		this.produto = produto;
 	}
 
-	public Pedido getPedido() {
-		return pedido;
+	public Promocao getPromocao() {
+		return promocao;
 	}
 
-	public void setPedido(Pedido pedido) {
-		this.pedido = pedido;
+	public void setPromocao(Promocao promocao) {
+		this.promocao = promocao;
 	}
+
 	
 	
 }

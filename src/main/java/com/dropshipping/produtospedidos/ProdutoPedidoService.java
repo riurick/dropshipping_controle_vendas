@@ -13,7 +13,8 @@ import com.dropshipping.pedidos.Pedido;
 import com.dropshipping.pedidos.PedidoRepository;
 import com.dropshipping.produtos.ProdutoRepository;
 import com.dropshipping.promocoes.Promocao;
-import com.dropshipping.promocoespedidos.PromocaoPedidoRepository;
+import com.dropshipping.promocoesprodutos.PromocaoProduto;
+import com.dropshipping.promocoesprodutos.PromocaoProdutoRepository;
 import com.dropshipping.service.MessagesService;
 
 @Service
@@ -33,7 +34,7 @@ public class ProdutoPedidoService {
 	ProdutoRepository produtoRepository;
 	
 	@Autowired 
-	PromocaoPedidoRepository promocaoPedidoRepository;
+	PromocaoProdutoRepository promocaoProdutoRepository;
 	
 	@Autowired
 	MessagesService messages;
@@ -45,8 +46,14 @@ public class ProdutoPedidoService {
 	}
 
 	private void calculaValor(ProdutoPedido produtoPedido) {
-		//Optional<ProdutoPedido> op = promocaoPedidoRepository.findByProdutoId(produtoPedido.getProduto().getId());
-		
+		List<PromocaoProduto> lista = promocaoProdutoRepository.findByProdutoId(produtoPedido.getProduto().getId());
+		if(!lista.isEmpty()) {
+			Promocao p = lista.get(0).getPromocao();
+			Double valor = (produtoPedido.getProduto().getPreco() * (1 - (p.getDesconto()/100))) * produtoPedido.getQuantidade();
+			produtoPedido.setValor(valor);
+		}else {
+			produtoPedido.setValor(produtoPedido.getProduto().getPreco() * produtoPedido.getQuantidade());
+		}
 	}
 
 	public ProdutoPedido update(ProdutoPedido produtoPedido) throws RegraNegocioException, SampleEntityNotFoundException {
