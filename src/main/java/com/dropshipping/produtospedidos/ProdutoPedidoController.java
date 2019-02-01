@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.dropshipping.exception.RegraNegocioException;
 import com.dropshipping.exception.SampleEntityNotFoundException;
-import com.dropshipping.pedidos.Pedido;
 import com.dropshipping.response.MessageType;
 import com.dropshipping.response.ServiceMessage;
 import com.dropshipping.response.ServiceResponse;
@@ -88,11 +88,23 @@ public class ProdutoPedidoController {
 	}
 
 	@DeleteMapping("/{id}")
-	@ApiOperation(value = "Apaga um ProdutoPedido pelo id", notes = "Um id válido deve ser informado", response = Pedido.class)
+	@ApiOperation(value = "Apaga um ProdutoPedido pelo id", notes = "Um id válido deve ser informado", response = ProdutoPedido.class)
 	public ResponseEntity<ServiceResponse<Void>> delete(@PathVariable Integer id) throws SampleEntityNotFoundException {
 		produtoPedidoService.delete(id);
 
 		return new ResponseEntity<>(new ServiceResponse<>(), HttpStatus.OK);
 	}
+	
+	@GetMapping("/buscaPorCliente/{id}")
+	@ApiOperation(value = "Busca lista de ProdutoPedido pelo cliente", notes = "Um id válido deve ser informado", response = ProdutoPedido.class)
+	public ServiceResponse<List<ProdutoPedido>> buscaPorCliente (@PathVariable Integer id) throws RegraNegocioException{
+		return new ServiceResponse<>(produtoPedidoService.findByCliente(id));
+	}
 
+	@GetMapping("/filtra")
+	@ApiOperation(value = "Filtra ProdutoPedido", response = ProdutoPedido.class)
+	public ServiceResponse<List<ProdutoPedido>> filtra(@RequestParam(value = "nomeCliente", required = false) String nomeCliente, 
+			@RequestParam(value = "nomeProduto", required = false) String nomeProduto){
+		return new ServiceResponse<>(produtoPedidoService.filtra(nomeCliente, nomeProduto));
+	}
 }

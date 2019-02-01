@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.dropshipping.clientes.ClienteRepository;
 import com.dropshipping.exception.RegraNegocioException;
 import com.dropshipping.exception.SampleEntityNotFoundException;
 import com.dropshipping.pedidos.Pedido;
@@ -22,6 +23,7 @@ public class ProdutoPedidoService {
 	public static final String PRODUTO_PEDIDO_NAO_ECONTRADO = "produtoPedido.naoEncontrado";
 	public static final String PRODUTO_NAO_CADASTRADO = "produto.naoEncontrado";
 	public static final String PEDIDO_NAO_CADASTRADO = "pedido.naoEncontrado";
+	public static final String CLIENTE_NAO_CADASTRADO = "cliente.naoEncontrado";
 	public static final String QUANTIDADE_ZERO = "quantidade.zero";
 
 	@Autowired
@@ -35,6 +37,9 @@ public class ProdutoPedidoService {
 	
 	@Autowired 
 	PromocaoProdutoRepository promocaoProdutoRepository;
+	
+	@Autowired
+	ClienteRepository clienteRepository;
 	
 	@Autowired
 	MessagesService messages;
@@ -107,5 +112,16 @@ public class ProdutoPedidoService {
 		if(produtoPedido.getQuantidade() > 0) {
 			throw new RegraNegocioException(messages.get(QUANTIDADE_ZERO));
 		}
+	}
+	
+	public List<ProdutoPedido> findByCliente(Integer id) throws RegraNegocioException{
+		if(!clienteRepository.findById(id).isPresent()) {
+			throw new RegraNegocioException(messages.get(CLIENTE_NAO_CADASTRADO));
+		}
+		return produtoPedidoRepository.findByCliente(id);
+	}
+	
+	public List<ProdutoPedido> filtra(String nomeCliente, String nomeProduto){
+		return produtoPedidoRepository.filta(nomeCliente == null ? "" : nomeCliente, nomeProduto == null? "" : nomeProduto);
 	}
 }
