@@ -1,5 +1,6 @@
 package com.dropshipping.pedidos;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -97,5 +98,16 @@ public class PedidoService {
 			throw new RegraNegocioException(messages.get(VENDEDOR_NAO_ECONTRADO));
 		}
 		return pedidoRepository.buscaPorVendedor(id, pageable);
+	}
+	
+	public Page<Pedido> buscaAvaliacoes(Pageable pageable){
+		return pedidoRepository.buscaAvaliacoes(pageable);
+	}
+	
+	public Page<Pedido> filtra(String nomeCliente, Date dataInicio, Date dataFim, String nomeVendedor, 
+			Boolean pago, String comentario, Integer nota, String statusEntrega, Pageable pageable){
+		return pedidoRepository.filtra(nomeCliente == null? "" : nomeCliente, dataInicio, dataFim, 
+				nomeVendedor == null? "" : nomeVendedor, pago, comentario == null? "" : comentario,
+						nota, statusEntrega == null? "" : statusEntrega, pageable);
 	}
 }

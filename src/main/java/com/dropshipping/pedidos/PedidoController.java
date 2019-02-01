@@ -1,6 +1,7 @@
 package com.dropshipping.pedidos;
 
 import java.net.URI;
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -113,6 +114,20 @@ public class PedidoController {
 	public ResponseEntity<ServiceResponse<Page<Pedido>>> buscaPorVendedor(@PathVariable Integer id, Pageable pageable) throws SampleEntityNotFoundException, RegraNegocioException {
 		Page<Pedido> page = pedidoService.buscaPorVendedor(id, pageable);
 		return ResponseEntity.ok(new ServiceResponse<>(page));
+	}
+	
+	@GetMapping("/buscaAvaliacoes")
+	@ApiOperation(value = "Lista Pedidos com Avaliações", response = Pedido.class)
+	public ResponseEntity<ServiceResponse<Page<Pedido>>> buscaAvaliacoes(Pageable pageable){
+		return new ResponseEntity<>(new ServiceResponse<>(pedidoService.buscaAvaliacoes(pageable)), HttpStatus.OK);
+	}
+	
+	@GetMapping("/filtra")
+	@ApiOperation(value = "Filtra lista de Pedidos", response = Pedido.class)
+	public ResponseEntity<ServiceResponse<Page<Pedido>>> filtra(String nomeCliente, Date dataInicio, Date dataFim, String nomeVendedor, 
+			Boolean pago, String comentario, Integer nota, String statusEntrega, Pageable pageable){
+		return new ResponseEntity<>(new ServiceResponse<>(pedidoService.filtra(nomeCliente, dataInicio, dataFim,
+				nomeVendedor, pago, comentario, nota, statusEntrega, pageable)), HttpStatus.OK);
 	}
 
 }
