@@ -12,8 +12,8 @@ public interface ProdutoPedidoRepository extends JpaRepository<ProdutoPedido, In
 	
 	List<ProdutoPedido> findByPedido(Pedido pedido);
 	
-	@Query(value = "Select p from ProdutoPedid p where p.pedido.cliente.id = :id")
-	List<ProdutoPedido> findByCliente (@Param("id") Integer id);
+	@Query(value = "Select p from ProdutoPedido p where p.pedido.cliente.id = :id")
+	List<ProdutoPedido> buscaPorCliente (@Param("id") Integer id);
 	
 	@Query(value = "Select p from ProdutoPedido p where p.pedido.cliente.nome like %:nomeCliente% "
 			+ "  and p.produto.nome like %:nomeProduto ")

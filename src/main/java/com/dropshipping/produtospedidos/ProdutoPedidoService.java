@@ -118,7 +118,7 @@ public class ProdutoPedidoService {
 		if(!clienteRepository.findById(id).isPresent()) {
 			throw new RegraNegocioException(messages.get(CLIENTE_NAO_CADASTRADO));
 		}
-		return produtoPedidoRepository.findByCliente(id);
+		return produtoPedidoRepository.buscaPorCliente(id);
 	}
 	
 	public List<ProdutoPedido> filtra(String nomeCliente, String nomeProduto){

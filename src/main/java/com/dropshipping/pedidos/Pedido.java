@@ -17,6 +17,7 @@ import org.hibernate.annotations.FetchMode;
 
 import com.dropshipping.clientes.Cliente;
 import com.dropshipping.vendedores.Vendedor;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 
 @Entity
@@ -26,7 +27,9 @@ public class Pedido {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
+	
 	@NotNull
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss.SSSZ")
 	private Date dtPedido;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -46,9 +49,6 @@ public class Pedido {
 	private String avComentario;
 	
 	private Integer nota;
-	
-	@Size(max = 45)
-	private String statusEntrega;
 	
 	public Integer getId() {
 		return id;
@@ -105,14 +105,4 @@ public class Pedido {
 	public void setNota(Integer nota) {
 		this.nota = nota;
 	}
-
-	public String getStatusEntrega() {
-		return statusEntrega;
-	}
-
-	public void setStatusEntrega(String statusEntrega) {
-		this.statusEntrega = statusEntrega;
-	}
-
-	
 }

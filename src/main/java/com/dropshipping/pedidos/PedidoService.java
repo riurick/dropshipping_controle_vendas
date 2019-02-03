@@ -105,9 +105,9 @@ public class PedidoService {
 	}
 	
 	public Page<Pedido> filtra(String nomeCliente, Date dataInicio, Date dataFim, String nomeVendedor, 
-			Boolean pago, String comentario, Integer nota, String statusEntrega, Pageable pageable){
+			Boolean pago, String comentario, Integer nota, Pageable pageable){
 		return pedidoRepository.filtra(nomeCliente == null? "" : nomeCliente, dataInicio, dataFim, 
 				nomeVendedor == null? "" : nomeVendedor, pago, comentario == null? "" : comentario,
-						nota, statusEntrega == null? "" : statusEntrega, pageable);
+						nota, pageable);
 	}
 }

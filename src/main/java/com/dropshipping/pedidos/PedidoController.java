@@ -9,6 +9,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -46,7 +49,7 @@ public class PedidoController {
 	private MessagesService messages;
 	
 	@PostMapping
-	@ApiOperation(value = "Cria um assunto")
+	@ApiOperation(value = "Cria um pedido")
 	public ResponseEntity<ServiceResponse<Pedido>> create(@RequestBody @Valid  Pedido pedido) throws RegraNegocioException {
 
 		pedido = pedidoService.create(pedido);
@@ -124,10 +127,16 @@ public class PedidoController {
 	
 	@GetMapping("/filtra")
 	@ApiOperation(value = "Filtra lista de Pedidos", response = Pedido.class)
-	public ResponseEntity<ServiceResponse<Page<Pedido>>> filtra(String nomeCliente, Date dataInicio, Date dataFim, String nomeVendedor, 
-			Boolean pago, String comentario, Integer nota, String statusEntrega, Pageable pageable){
+	public ResponseEntity<ServiceResponse<Page<Pedido>>> filtra(
+			@RequestParam(value = "nomeCliente", required = false) String nomeCliente,
+			@RequestParam(value = "dataInicio", required = false) Date dataInicio,
+			@RequestParam(value = "dataFim", required = false) Date dataFim,
+			@RequestParam(value = "nomeVendedor", required = false) String nomeVendedor, 
+			@RequestParam(value = "pago", required = false) Boolean pago,
+			@RequestParam(value = "comentario", required = false) String comentario,
+			@RequestParam(value = "nota", required = false) Integer nota, Pageable pageable){
 		return new ResponseEntity<>(new ServiceResponse<>(pedidoService.filtra(nomeCliente, dataInicio, dataFim,
-				nomeVendedor, pago, comentario, nota, statusEntrega, pageable)), HttpStatus.OK);
+				nomeVendedor, pago, comentario, nota, pageable)), HttpStatus.OK);
 	}
 
 }

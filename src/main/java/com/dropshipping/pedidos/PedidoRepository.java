@@ -19,11 +19,10 @@ public interface PedidoRepository extends JpaRepository<Pedido, Integer>{
 	@Query("Select p from Pedido p where p.nota is NOT NULL")
 	Page<Pedido> buscaAvaliacoes(Pageable pageable);
 	
-	@Query("Select p from Pedido p where p.cliente.nome like %:nomeCliente% and (p.dtPedido between :dataInicio and :dataFim) "
-			+ "and p.vendedor.nome like %:nomeVendedor% and p.pagamentoEfetuado = :pago "
-			+ "and p.avComentario like %:comentario% and p.nota = :nota "
-			+ "and p.statusEntrega like %:statusEntrega% ")
+	@Query("Select p from Pedido p where p.cliente.nome like %:nomeCliente% and (:dataInicio is null or :dataFim is null or p.dtPedido between :dataInicio and :dataFim) "
+			+ "and p.vendedor.nome like %:nomeVendedor% and (:pago is null or p.pagamentoEfetuado = :pago) "
+			+ "and p.avComentario like %:comentario% and (:nota is null or p.nota = :nota) ")
 	Page<Pedido> filtra(@Param("nomeCliente") String nomeCliente, @Param("dataInicio") Date dataInicio , @Param("dataFim") Date dataFim, 
 			@Param("nomeVendedor") String nomeVendedor, @Param("pago") Boolean pago,
-			@Param("comentario") String comentario, @Param("nota") Integer nota, @Param("statusEntrega") String statusEntrega,  Pageable pageable);
+			@Param("comentario") String comentario, @Param("nota") Integer nota,  Pageable pageable);
 }
