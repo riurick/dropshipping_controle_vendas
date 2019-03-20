@@ -27,7 +27,7 @@ public class Produto {
 	@Size(max = 50)
 	private String nome;
 	
-	@Size(max = 255)
+	@Size(max = 1000)
 	private String descricao;
 	
 	@Size(max = 50)

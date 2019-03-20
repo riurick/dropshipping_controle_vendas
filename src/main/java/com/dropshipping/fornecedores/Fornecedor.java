@@ -2,9 +2,6 @@ package com.dropshipping.fornecedores;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
@@ -14,14 +11,11 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import com.dropshipping.enderecos.Endereco;
+import com.dropshipping.usuario.Usuario;
 
 @Entity
-public class Fornecedor {
+public class Fornecedor extends Usuario{
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
-	
 	@NotNull
 	@Size(max = 14)
 	private String cnpj;
@@ -40,24 +34,9 @@ public class Fornecedor {
 	@NotNull
 	private Endereco endereco;
 	
-	@Size(max = 50)
-	private String email;
-	
 	@Size(max = 12)
 	private String telefone;
 	
-	@NotNull
-	@Size(max = 8)
-	private String senha;
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
 	public String getCnpj() {
 		return cnpj;
 	}
@@ -90,14 +69,6 @@ public class Fornecedor {
 		this.endereco = endereco;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public String getTelefone() {
 		return telefone;
 	}
@@ -106,13 +77,4 @@ public class Fornecedor {
 		this.telefone = telefone;
 	}
 
-	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-	
-	
 }
