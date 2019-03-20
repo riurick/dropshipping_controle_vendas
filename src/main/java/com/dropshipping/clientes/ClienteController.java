@@ -99,5 +99,11 @@ public class ClienteController {
 
 		return new ResponseEntity<>(new ServiceResponse<>(message), HttpStatus.OK);
 	}
+	
+	@ApiOperation(value = "Detalha um cliente pelo Email", notes = "Um email válido deve ser informado", response = Cliente.class)
+	@GetMapping("/getByEmail/{email}")
+	public ResponseEntity<ServiceResponse<Cliente>> findByEmail(@PathVariable String email) throws SampleEntityNotFoundException {
+		return ResponseEntity.ok(new ServiceResponse<>(clienteService.findByEmail(email)));
+	}
 
 }

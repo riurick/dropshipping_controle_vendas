@@ -11,6 +11,7 @@ import com.dropshipping.enderecos.Endereco;
 import com.dropshipping.enderecos.EnderecoRepository;
 import com.dropshipping.exception.RegraNegocioException;
 import com.dropshipping.exception.SampleEntityNotFoundException;
+import com.dropshipping.fornecedores.Fornecedor;
 import com.dropshipping.service.MessagesService;
 import com.dropshipping.util.ValidaEmail;
 import com.dropshipping.util.ValidacaoCpfUtil;
@@ -82,7 +83,7 @@ public class ClienteService {
 		if (!clienteRepository.findByCpf(cliente.getCpf().trim()).isEmpty()) {
 			throw new RegraNegocioException(messages.get(CPF_JA_CADASTRADO));
 		}
-		if (!clienteRepository.findByEmail(cliente.getEmail().trim()).isEmpty()) {
+		if (!clienteRepository.findByEmail(cliente.getEmail().trim()).isPresent()) {
 			throw new RegraNegocioException(messages.get(EMAIL_JA_CADASTRADO));
 		}
 		if(!ValidacaoCpfUtil.isValidCPF(cliente.getCpf())) {
@@ -91,6 +92,14 @@ public class ClienteService {
 		if(!ValidaEmail.validar(cliente.getEmail())) {
 			throw new RegraNegocioException(messages.get(EMAIL_INVALIDO));
 		}
+	}
+	
+	public Cliente findByEmail(String email) throws SampleEntityNotFoundException {
+		Optional<Cliente> op = clienteRepository.findByEmail(email);
+		if(!op.isPresent()) {
+			throw new SampleEntityNotFoundException(messages.get(CLIENTE_NAO_ECONTRADO));
+		}
+		return op.get();
 	}
 
 }
