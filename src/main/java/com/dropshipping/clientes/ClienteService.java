@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dropshipping.enderecos.Endereco;
@@ -37,12 +39,20 @@ public class ClienteService {
 	@Autowired
 	MessagesService messages;
 	
+	private PasswordEncoder enconder;
+	
+	public ClienteService() {
+		super();
+		enconder = new BCryptPasswordEncoder();
+	}
+	
 	public Cliente create(Cliente cliente) throws RegraNegocioException{
 		validaCliente(cliente);
 		//Cadastrando endereço
 		Endereco e = cliente.getEndereco();
 		e = enderecoRepository.save(cliente.getEndereco());
 		cliente.setEndereco(e);
+		cliente.setSenha(enconder.encode(cliente.getSenha()));
 		return clienteRepository.save(cliente);
 	}
 
@@ -51,6 +61,7 @@ public class ClienteService {
 		validaCliente(cliente);
 		if (existing.isPresent()) {
 			enderecoRepository.save(cliente.getEndereco());
+			cliente.setSenha(enconder.encode(cliente.getSenha()));
 			return clienteRepository.save(cliente);
 		} else {
 			throw new SampleEntityNotFoundException(messages.get(CLIENTE_NAO_ECONTRADO));
@@ -83,7 +94,7 @@ public class ClienteService {
 		if (!clienteRepository.findByCpf(cliente.getCpf().trim()).isEmpty()) {
 			throw new RegraNegocioException(messages.get(CPF_JA_CADASTRADO));
 		}
-		if (!clienteRepository.findByEmail(cliente.getEmail().trim()).isPresent()) {
+		if (clienteRepository.findByEmail(cliente.getEmail().trim()).isPresent()) {
 			throw new RegraNegocioException(messages.get(EMAIL_JA_CADASTRADO));
 		}
 		if(!ValidacaoCpfUtil.isValidCPF(cliente.getCpf())) {
@@ -101,5 +112,6 @@ public class ClienteService {
 		}
 		return op.get();
 	}
+	
 
 }
