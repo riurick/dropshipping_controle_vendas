@@ -40,6 +40,7 @@ public class PedidoService {
 	MessagesService messages;
 	
 	public Pedido create(Pedido pedido) throws RegraNegocioException{
+		pedido.setDtPedido(new Date());
 		validaPedido(pedido);
 		return pedidoRepository.save(pedido);
 	}

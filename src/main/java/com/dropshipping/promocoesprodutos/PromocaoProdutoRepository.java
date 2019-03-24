@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface PromocaoProdutoRepository extends JpaRepository<PromocaoProduto, Integer>{
 	
-	@Query(value = "Select p from PromocaoProduto p where p.produto.id = id and p.promocao.validade >= GETDATE() ")
+	@Query(value = "Select p from PromocaoProduto p where p.produto.id = id and p.promocao.validade >= NOW() ")
 	List<PromocaoProduto> findByProdutoId(Integer id);
 
 }

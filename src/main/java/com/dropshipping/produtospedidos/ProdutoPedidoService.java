@@ -46,7 +46,7 @@ public class ProdutoPedidoService {
 	
 	public ProdutoPedido create(ProdutoPedido produtoPedido) throws RegraNegocioException{
 		validaProdutoPedido(produtoPedido);
-		calculaValor(produtoPedido);
+		//calculaValor(produtoPedido);
 		return produtoPedidoRepository.save(produtoPedido);
 	}
 
@@ -109,7 +109,7 @@ public class ProdutoPedidoService {
 		if (!pedidoRepository.findById(produtoPedido.getPedido().getId()).isPresent()) {
 			throw new RegraNegocioException(messages.get(PEDIDO_NAO_CADASTRADO));
 		}
-		if(produtoPedido.getQuantidade() > 0) {
+		if(produtoPedido.getQuantidade() <= 0) {
 			throw new RegraNegocioException(messages.get(QUANTIDADE_ZERO));
 		}
 	}
