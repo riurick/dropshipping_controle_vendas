@@ -36,7 +36,6 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/api/v1/produto")
 @Api(value = "Produtos")
-@CrossOrigin("*")
 public class ProdutoController {
 	
 	public static final String PRODUTO_CRIADO = "produto.criado";
@@ -50,6 +49,7 @@ public class ProdutoController {
 	private MessagesService messages;
 	
 	@PostMapping
+	@CrossOrigin("*")
 	@ApiOperation(value = "Cria um produto")
 	public ResponseEntity<ServiceResponse<Produto>> create(@RequestBody @Valid Produto produto) throws RegraNegocioException {
 
@@ -68,17 +68,20 @@ public class ProdutoController {
 
 	@ApiOperation(value = "Detalha um produto pelo ID", notes = "Um ID válido deve ser informado", response = Produto.class)
 	@GetMapping("/{id}")
+	@CrossOrigin("*")
 	public ResponseEntity<ServiceResponse<Produto>> findById(@PathVariable Integer id) throws SampleEntityNotFoundException {
 		return ResponseEntity.ok(new ServiceResponse<>(produtoService.findById(id)));
 	}
 
 	@GetMapping
+	@CrossOrigin("*")
 	@ApiOperation(value = "Lista", response = Produto.class)
 	public ServiceResponse<List<Produto>> listassuntosPaginado() {
 		return new ServiceResponse<>(produtoService.getAll());
 	}
 
 	@PutMapping("/{id}")
+	@CrossOrigin("*")
 	@ApiOperation(value = "Altera os dados do produto informado", notes = "Um ID válido deve ser informado", response = Produto.class)
 	public ResponseEntity<ServiceResponse<Produto>> update(@PathVariable Integer id,
 			@Valid @RequestBody Produto produto) throws RegraNegocioException, SampleEntityNotFoundException {
@@ -98,6 +101,7 @@ public class ProdutoController {
 	}
 
 	@DeleteMapping("/{id}")
+	@CrossOrigin("*")
 	@ApiOperation(value = "Apaga um Produto pelo id", notes = "Um id válido deve ser informado", response = Produto.class)
 	public ResponseEntity<ServiceResponse<Void>> deleteassunto(@PathVariable Integer id) throws SampleEntityNotFoundException {
 		produtoService.delete(id);
@@ -108,6 +112,7 @@ public class ProdutoController {
 	
 	@ApiOperation(value = "Pagina produto por filtro", response = Produto.class)
 	@GetMapping("/filtro")
+	@CrossOrigin("*")
 	public ServiceResponse<Page<Produto>> findByFiltro(@RequestParam(value = "nome", required = false) String nome,
 			@RequestParam(value = "descricao", required = false) String descricao,
 			@RequestParam(value = "marca", required = false) String marca, Pageable pageable) throws SampleEntityNotFoundException {

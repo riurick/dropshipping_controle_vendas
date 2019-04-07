@@ -37,7 +37,6 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/api/v1/pedidos")
 @Api(value = "Pedidos")
-@CrossOrigin("*")
 public class PedidoController {
 	public static final String PEDIDO_CRIADO = "pedido.criado";
 	public static final String PEDIDO_ATUALIZADO = "pedido.atualizado";
@@ -49,6 +48,7 @@ public class PedidoController {
 	private MessagesService messages;
 	
 	@PostMapping
+	@CrossOrigin("*")
 	@ApiOperation(value = "Cria um pedido")
 	public ResponseEntity<ServiceResponse<Pedido>> create(@RequestBody @Valid  Pedido pedido) throws RegraNegocioException {
 
@@ -67,17 +67,20 @@ public class PedidoController {
 
 	@ApiOperation(value = "Detalha um Pedido pelo ID", notes = "Um ID válido deve ser informado", response = Pedido.class)
 	@GetMapping("/{id}")
+	@CrossOrigin("*")
 	public ResponseEntity<ServiceResponse<Pedido>> findById(@PathVariable Integer id) throws SampleEntityNotFoundException {
 		return ResponseEntity.ok(new ServiceResponse<>(pedidoService.findById(id)));
 	}
 
 	@GetMapping
+	@CrossOrigin("*")
 	@ApiOperation(value = "Lista", response = Pedido.class)
 	public ServiceResponse<List<Pedido>> listassuntosPaginado() {
 		return new ServiceResponse<>(pedidoService.getAll());
 	}
 
 	@PutMapping("/{id}")
+	@CrossOrigin("*")
 	@ApiOperation(value = "Altera os dados do Pedido informado", notes = "Um ID válido deve ser informado", response = Pedido.class)
 	public ResponseEntity<ServiceResponse<Pedido>> update(@PathVariable Integer id,
 			@Valid @RequestBody Pedido pedido) throws RegraNegocioException, SampleEntityNotFoundException {
@@ -97,6 +100,7 @@ public class PedidoController {
 	}
 
 	@DeleteMapping("/{id}")
+	@CrossOrigin("*")
 	@ApiOperation(value = "Apaga um pedido pelo id", notes = "Um id válido deve ser informado", response = Pedido.class)
 	public ResponseEntity<ServiceResponse<Void>> delete(@PathVariable Integer id) throws SampleEntityNotFoundException {
 		pedidoService.delete(id);
@@ -107,6 +111,7 @@ public class PedidoController {
 	
 	@ApiOperation(value = "Detalha um Pedido pelo ID do cliente", notes = "Um ID válido deve ser informado", response = Pedido.class)
 	@GetMapping("/cliente/{id}")
+	@CrossOrigin("*")
 	public ResponseEntity<ServiceResponse<Page<Pedido>>> buscaPorCliente(@PathVariable Integer id, Pageable pageable) throws SampleEntityNotFoundException, RegraNegocioException {
 		Page<Pedido> page = pedidoService.buscaPorCliente(id, pageable);
 		return ResponseEntity.ok(new ServiceResponse<>(page));
@@ -114,18 +119,21 @@ public class PedidoController {
 	
 	@ApiOperation(value = "Detalha um Pedido pelo ID do vendedor", notes = "Um ID válido deve ser informado", response = Pedido.class)
 	@GetMapping("/vendedor/{id}")
+	@CrossOrigin("*")
 	public ResponseEntity<ServiceResponse<Page<Pedido>>> buscaPorVendedor(@PathVariable Integer id, Pageable pageable) throws SampleEntityNotFoundException, RegraNegocioException {
 		Page<Pedido> page = pedidoService.buscaPorVendedor(id, pageable);
 		return ResponseEntity.ok(new ServiceResponse<>(page));
 	}
 	
 	@GetMapping("/buscaAvaliacoes")
+	@CrossOrigin("*")
 	@ApiOperation(value = "Lista Pedidos com Avaliações", response = Pedido.class)
 	public ResponseEntity<ServiceResponse<Page<Pedido>>> buscaAvaliacoes(Pageable pageable){
 		return new ResponseEntity<>(new ServiceResponse<>(pedidoService.buscaAvaliacoes(pageable)), HttpStatus.OK);
 	}
 	
 	@GetMapping("/filtra")
+	@CrossOrigin("*")
 	@ApiOperation(value = "Filtra lista de Pedidos", response = Pedido.class)
 	public ResponseEntity<ServiceResponse<Page<Pedido>>> filtra(
 			@RequestParam(value = "nomeCliente", required = false) String nomeCliente,

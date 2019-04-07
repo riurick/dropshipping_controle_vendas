@@ -33,7 +33,6 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/api/v1/clientes")
 @Api(value = "Clientes")
-@CrossOrigin("*")
 public class ClienteController {
 	
 	public static final String CLIENTE_CRIADO = "cliente.criado";
@@ -64,17 +63,20 @@ public class ClienteController {
 
 	@ApiOperation(value = "Detalha um cliente pelo ID", notes = "Um ID válido deve ser informado", response = Cliente.class)
 	@GetMapping("/{id}")
+	@CrossOrigin("*")
 	public ResponseEntity<ServiceResponse<Cliente>> findById(@PathVariable Integer id) throws SampleEntityNotFoundException {
 		return ResponseEntity.ok(new ServiceResponse<>(clienteService.findById(id)));
 	}
 
 	@GetMapping
+	@CrossOrigin("*")
 	@ApiOperation(value = "Lista", response = Cliente.class)
 	public ServiceResponse<List<Cliente>> lista() {
 		return new ServiceResponse<>(clienteService.getAll());
 	}
 
 	@PutMapping("/{id}")
+	@CrossOrigin("*")
 	@ApiOperation(value = "Altera os dados do cliente informado", notes = "Um ID válido deve ser informado", response = Cliente.class)
 	public ResponseEntity<ServiceResponse<Cliente>> update(@PathVariable Integer id,
 			@Valid @RequestBody Cliente cliente) throws RegraNegocioException, SampleEntityNotFoundException {
@@ -94,6 +96,7 @@ public class ClienteController {
 	}
 
 	@DeleteMapping("/{id}")
+	@CrossOrigin("*")
 	@ApiOperation(value = "Apaga um cliente pelo id", notes = "Um id válido deve ser informado", response = Cliente.class)
 	public ResponseEntity<ServiceResponse<Void>> delete(@PathVariable Integer id) throws SampleEntityNotFoundException {
 		clienteService.delete(id);
@@ -104,6 +107,7 @@ public class ClienteController {
 	
 	@ApiOperation(value = "Detalha um cliente pelo Email", notes = "Um email válido deve ser informado", response = Cliente.class)
 	@GetMapping("/getByEmail/{email}")
+	@CrossOrigin("*")
 	public ResponseEntity<ServiceResponse<Cliente>> findByEmail(@PathVariable String email) throws SampleEntityNotFoundException {
 		return ResponseEntity.ok(new ServiceResponse<>(clienteService.findByEmail(email)));
 	}
