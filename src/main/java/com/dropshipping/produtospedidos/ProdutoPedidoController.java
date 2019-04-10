@@ -39,7 +39,8 @@ public class ProdutoPedidoController {
 	ProdutoPedidoService produtoPedidoService;
 	
 	@PostMapping
-	@ApiOperation(value = "Cria um assunto")
+	@CrossOrigin("*")
+	@ApiOperation(value = "Cria um produtoPedido")
 	public ResponseEntity<ServiceResponse<ProdutoPedido>> create(@RequestBody @Valid  ProdutoPedido pedido) throws RegraNegocioException {
 
 		pedido = produtoPedidoService.create(pedido);
