@@ -44,22 +44,7 @@ public class ClienteController {
 	@Autowired
 	private MessagesService messages;
 	
-	@PostMapping
-	@ApiOperation(value = "Cria um cliente")
-	public ResponseEntity<ServiceResponse<Cliente>> create(@RequestBody @Valid Cliente cliente) throws RegraNegocioException {
-
-		cliente = clienteService.create(cliente);
-
-		HttpHeaders headers = new HttpHeaders();
-
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cliente.getId())
-				.toUri();
-		headers.setLocation(location);
-
-		ServiceMessage message = new ServiceMessage(messages.get(CLIENTE_CRIADO));
-
-		return new ResponseEntity<>(new ServiceResponse<>(cliente, message), headers, HttpStatus.CREATED);
-	}
+	
 
 	@ApiOperation(value = "Detalha um cliente pelo ID", notes = "Um ID válido deve ser informado", response = Cliente.class)
 	@GetMapping("/{id}")
@@ -75,35 +60,6 @@ public class ClienteController {
 		return new ServiceResponse<>(clienteService.getAll());
 	}
 
-	@PutMapping("/{id}")
-	@CrossOrigin("*")
-	@ApiOperation(value = "Altera os dados do cliente informado", notes = "Um ID válido deve ser informado", response = Cliente.class)
-	public ResponseEntity<ServiceResponse<Cliente>> update(@PathVariable Integer id,
-			@Valid @RequestBody Cliente cliente) throws RegraNegocioException, SampleEntityNotFoundException {
-		if (!cliente.getId().equals(id)) {
-			return new ResponseEntity<>(
-					new ServiceResponse<>(null,
-							new ServiceMessage(MessageType.ERROR, "URL ID: '" + id
-									+ " CLiente não corresponde " + cliente.getId() + "'.")),
-					HttpStatus.BAD_REQUEST);
-		}
-
-		ServiceMessage message = new ServiceMessage(messages.get(CLIENTE_ATUALIZADO));
-
-		return new ResponseEntity<>(new ServiceResponse<>(clienteService.update(cliente), message),
-				HttpStatus.OK);
-
-	}
-
-	@DeleteMapping("/{id}")
-	@CrossOrigin("*")
-	@ApiOperation(value = "Apaga um cliente pelo id", notes = "Um id válido deve ser informado", response = Cliente.class)
-	public ResponseEntity<ServiceResponse<Void>> delete(@PathVariable Integer id) throws SampleEntityNotFoundException {
-		clienteService.delete(id);
-		ServiceMessage message = new ServiceMessage(messages.get(CLIENTE_DELETADO));
-
-		return new ResponseEntity<>(new ServiceResponse<>(message), HttpStatus.OK);
-	}
 	
 	@ApiOperation(value = "Detalha um cliente pelo Email", notes = "Um email válido deve ser informado", response = Cliente.class)
 	@GetMapping("/getByEmail/{email}")
